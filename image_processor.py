@@ -6,7 +6,7 @@ Aplicación simple para aplicar transformaciones matemáticas a imágenes.
 
 import os
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, simpledialog
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from PIL import Image, ImageTk
 import numpy as np
@@ -147,6 +147,18 @@ class ImageProcessor:
                 width=18,
                 pady=8
             ).grid(row=i // 3, column=i % 3, padx=8, pady=5)
+        
+        # Botón para calcular área
+        tk.Button(
+            button_frame,
+            text="Calcular Área",
+            command=self.calculate_area,
+            bg="#16a085",
+            fg="white",
+            font=("Arial", 10, "bold"),
+            width=18,
+            pady=8
+        ).grid(row=1, column=2, padx=8, pady=5)
     
     def load_image(self):
         """Carga una imagen desde el sistema de archivos."""
@@ -348,6 +360,73 @@ class ImageProcessor:
             
         except Exception as e:
             messagebox.showerror("Error", f"Error al procesar:\n{str(e)}")
+    
+    def calculate_area(self):
+        """
+        Calcula el área de una imagen binaria.
+        Permite cargar una imagen binaria y calcula el área en píxeles.
+        Opcionalmente convierte a cm² si se proporciona PPU (píxeles por unidad).
+        """
+        if self.processed_image is None or self.processed_image.mode != 'L':
+            messagebox.showinfo(
+                "Información",
+                "Primero aplica una transformación de Binarización para calcular el área.\n\n"
+                "El cálculo de área funciona sobre imágenes binarizadas (blanco y negro)."
+            )
+            return
+        
+        try:
+            # Obtener la imagen binaria procesada
+            binary_img = self.processed_image
+            arr = np.asarray(binary_img, dtype=np.uint8)
+            
+            # Preguntar si el objeto es blanco o negro
+            response = messagebox.askyesnocancel(
+                "Selección de objeto",
+                "¿El objeto a medir es BLANCO?\n\n"
+                "Sí = objeto blanco\n"
+                "No = objeto negro\n"
+                "Cancelar = cancelar operación"
+            )
+            
+            if response is None:  # Cancelar
+                return
+            
+            object_is_white = response
+            
+            # Calcular área en píxeles
+            if object_is_white:
+                mask = (arr > 127)  # Píxeles blancos
+            else:
+                mask = (arr <= 127)  # Píxeles negros
+            
+            pixel_area = int(mask.sum())
+            
+            # Preguntar si quiere convertir a cm²
+            ppu_input = tk.simpledialog.askstring(
+                "Conversión a cm²",
+                f"Área en píxeles: {pixel_area}\n\n"
+                "Si desea convertir a cm², ingrese PPU (píxeles por cm).\n"
+                "Deje vacío para omitir:",
+                parent=self.root
+            )
+            
+            result_msg = f"Área calculada:\n\n"
+            result_msg += f"Píxeles: {pixel_area}\n"
+            
+            if ppu_input and ppu_input.strip():
+                try:
+                    ppu = float(ppu_input.strip())
+                    if ppu > 0:
+                        area_cm2 = pixel_area / (ppu * ppu)
+                        result_msg += f"Área en cm²: {area_cm2:.4f}\n"
+                except ValueError:
+                    pass
+            
+            messagebox.showinfo("Resultado - Cálculo de Área", result_msg)
+            
+        except Exception as e:
+            messagebox.showerror("Error", f"Error al calcular área:\n{str(e)}")
 
 
 def main():
