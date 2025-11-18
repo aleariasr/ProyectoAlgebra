@@ -2,11 +2,59 @@
 
 ## Descripción del Proyecto
 
-Este proyecto utiliza conceptos de **álgebra lineal** para procesar imágenes en blanco y negro y calcular de manera precisa el área de los objetos presentes en ellas. El programa identifica automáticamente las figuras u objetos presentes en una imagen y calcula sus áreas utilizando operaciones matriciales.
+Este proyecto utiliza conceptos de **álgebra lineal** para procesar imágenes y aplicar transformaciones matemáticas. Incluye una aplicación GUI interactiva para explorar transformaciones de imágenes, así como herramientas para calcular áreas de objetos en imágenes binarias.
 
 ## Contenido del Proyecto
 
 ### 1. Programas Principales
+
+#### `simple_image_lab.py` ⭐ NUEVO - Aplicación GUI Interactiva
+Aplicación gráfica completa que permite:
+- **Importar imágenes** desde tu computadora
+- **Explorar y seleccionar** imágenes para transformar
+- **Aplicar transformaciones** con álgebra lineal:
+  - Rotación (matriz de rotación 2D)
+  - Redimensionamiento (matriz de escalamiento)
+  - Ajuste de contraste y brillo (transformación afín)
+  - Conversión a escala de grises (combinación lineal RGB)
+  - Binarización automática (método de Otsu)
+  - Binarización con umbral fijo
+- **Previsualización en tiempo real** de las imágenes
+- **Guardar todas las transformaciones** con documentación automática
+- **Calcular áreas** de objetos en imágenes binarias
+
+**Características de la interfaz:**
+- 📁 Carga múltiples imágenes fácilmente
+- 👁️ Previsualización de original y binaria
+- ⚙️ Controles para ajustar parámetros
+- 📝 Log de actividad en tiempo real
+- 💾 Exporta transformaciones con documentación de álgebra lineal
+
+**Uso:**
+```bash
+python simple_image_lab.py
+```
+
+Luego:
+1. Haz clic en "📁 Abrir imágenes..." para seleccionar imágenes de tu computadora
+2. Selecciona una imagen de la lista para previsualizar
+3. Ajusta los parámetros de transformación según necesites
+4. Haz clic en "💾 Guardar todas las transformaciones"
+
+**Salida generada:**
+- `outputs/<nombre_imagen>/00_original.png` - Imagen original
+- `outputs/<nombre_imagen>/01_rotada.png` - Rotación aplicada
+- `outputs/<nombre_imagen>/02_resized.png` - Redimensionamiento
+- `outputs/<nombre_imagen>/03_grises.png` - Escala de grises
+- `outputs/<nombre_imagen>/04_contraste.png` - Contraste ajustado
+- `outputs/<nombre_imagen>/05_binaria_otsu.png` - Binarización Otsu
+- `outputs/<nombre_imagen>/06_blanco_negro.png` - Umbral fijo
+- `outputs/<nombre_imagen>/README_TRANSFORMACIONES.txt` - Documentación completa con:
+  - Código utilizado para cada transformación
+  - Operación de álgebra lineal involucrada
+  - Explicación matemática detallada
+
+---
 
 #### `image_area_calculator.py`
 Programa principal que procesa imágenes en blanco y negro para:

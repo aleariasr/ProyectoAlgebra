@@ -49,3 +49,6 @@ htmlcov/
 *.log
 *.tmp
 tmp/
+
+# Output directories
+outputs/
